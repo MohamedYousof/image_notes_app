@@ -6,26 +6,26 @@ class NotesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return ListView.separated(
-    //   itemBuilder: (context, i) => NoteTile(),
-    //   itemCount: 3,
-    //   padding: EdgeInsets.all(10),
-    //   separatorBuilder: (BuildContext context, int index) =>
-    //       SizedBox(height: 10),
-    // );
-    return OrientationBuilder(
-      builder: (BuildContext context, Orientation orientation) {
-        return GridView.builder(
-          scrollDirection: Axis.vertical,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
-            mainAxisSpacing: 15,
-          ),
-          padding: EdgeInsets.all(10),
-          itemBuilder: (context, i) => NoteTile(),
-          itemCount: 3,
-        );
-      },
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add, color: Theme.of(context).accentColor),
+        backgroundColor: Theme.of(context).buttonColor,
+      ),
+      body: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
+          return GridView.builder(
+            scrollDirection: Axis.vertical,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
+              mainAxisSpacing: 15,
+            ),
+            padding: EdgeInsets.all(10),
+            itemBuilder: (context, i) => NoteTile(),
+            itemCount: 3,
+          );
+        },
+      ),
     );
   }
 }

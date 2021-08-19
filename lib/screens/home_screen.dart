@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_notes/widgets/main_tab.dart';
+import 'package:image_notes/widgets/profile_tab.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,21 +13,32 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             tabs: [
-              Tab(text: 'Main'),
-              Tab(text: 'Profile'),
+              Tab(
+                child: Text(
+                  'Main',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  'Profile',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
             NotesList(),
-            Container(),
+            ProfileTab(),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add, color: Theme.of(context).accentColor),
-          backgroundColor: Theme.of(context).buttonColor,
         ),
       ),
     );
