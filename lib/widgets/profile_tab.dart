@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_notes/controller/helpers/shared_prefs.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({Key? key}) : super(key: key);
@@ -52,11 +53,16 @@ class ProfileTab extends StatelessWidget {
                       child: Image.asset('assets/pics/profile_pic.png'),
                     ),
                     SizedBox(height: 10),
-                    Text(
-                      'Username',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
-                    )
+                    FutureBuilder(
+                      future: SharedData().getUsername(),
+                      builder: (context, snapShot) => snapShot.hasData
+                          ? Text(
+                              snapShot.data.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 17),
+                            )
+                          : Container(),
+                    ),
                   ],
                 ),
               ),

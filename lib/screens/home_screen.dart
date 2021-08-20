@@ -3,7 +3,7 @@ import 'package:image_notes/widgets/main_tab.dart';
 import 'package:image_notes/widgets/profile_tab.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  static const routeName = 'home_screen';
 
   @override
   Widget build(BuildContext context) {

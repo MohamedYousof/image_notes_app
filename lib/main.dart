@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_notes/screens/home_screen.dart';
+import 'package:image_notes/screens/login_screen.dart';
+import 'package:image_notes/screens/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,6 +34,12 @@ class MyApp extends StatelessWidget {
         tabBarTheme: TabBarTheme(labelColor: Colors.white),
       ),
       home: HomeScreen(),
+      initialRoute: SplashScreen.routeName,
+      routes: {
+        SplashScreen.routeName: (ctx) => SplashScreen(),
+        HomeScreen.routeName: (ctx) => HomeScreen(),
+        LoginScreen.routeName: (ctx) => LoginScreen(),
+      },
     );
   }
 }
