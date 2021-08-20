@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_notes/controller/helpers/shared_prefs.dart';
+import 'package:image_notes/controller/providers/notes_provider.dart';
 import 'package:image_notes/widgets/logo.dart';
+import 'package:provider/provider.dart';
 
 import 'home_screen.dart';
 import 'login_screen.dart';
@@ -15,14 +17,12 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 3)).then((value) {
-      SharedData().getLoginData().then((value) {
-        if (value['token'] == null) {
-          Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-        } else {
-          Navigator.pushReplacementNamed(context, HomeScreen.routeName);
-        }
-      });
+    SharedData().getLoginData().then((value) {
+      if (value['token'] == null) {
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      } else {
+        Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      }
     });
 
     super.initState();

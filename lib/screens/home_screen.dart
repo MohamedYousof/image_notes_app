@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:image_notes/controller/providers/notes_provider.dart';
 import 'package:image_notes/widgets/main_tab.dart';
 import 'package:image_notes/widgets/profile_tab.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = 'home_screen';

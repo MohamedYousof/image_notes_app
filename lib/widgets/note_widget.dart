@@ -1,7 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class NoteTile extends StatelessWidget {
-  const NoteTile({Key? key}) : super(key: key);
+  final remoteId;
+  final imgUrl;
+  final comment;
+  final username;
+  NoteTile({
+    this.remoteId,
+    this.imgUrl,
+    this.username,
+    this.comment,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -9,18 +19,20 @@ class NoteTile extends StatelessWidget {
       elevation: 5,
       child: Column(
         children: [
-          NoteHeader(),
-          Image.asset(
-            'assets/pics/Bitmap.png',
-            fit: BoxFit.fill,
-            width: double.infinity,
+          NoteHeader(username),
+          Expanded(
+            child: CachedNetworkImage(
+              imageUrl: imgUrl,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(15),
             child: Text(
-              'On the day after a review in The New York Times declared Outer space, in Brooklyn, '
-              '“the restaurant of the summer,” the three chefs who collaborated on its union of '
-              'Vietnamese and Cambodian cooking pulled out.',
+              comment,
               softWrap: true,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -33,7 +45,8 @@ class NoteTile extends StatelessWidget {
 }
 
 class NoteHeader extends StatelessWidget {
-  const NoteHeader({Key? key}) : super(key: key);
+  final username;
+  NoteHeader(this.username);
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +63,7 @@ class NoteHeader extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  'Username',
+                  username,
                   overflow: TextOverflow.clip,
                   style: TextStyle(
                     color: Colors.black,

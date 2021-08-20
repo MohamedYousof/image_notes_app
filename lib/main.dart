@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_notes/controller/providers/notes_provider.dart';
 import 'package:image_notes/screens/home_screen.dart';
 import 'package:image_notes/screens/login_screen.dart';
 import 'package:image_notes/screens/splash_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,21 +27,23 @@ class MyApp extends StatelessWidget {
       900: Color.fromRGBO(178, 223, 219, 1),
     };
     MaterialColor customColor = MaterialColor(0xFFB2DFDB, mainColor);
-    return MaterialApp(
-      title: 'Image Notes',
-      theme: ThemeData(
-        primarySwatch: customColor,
-        accentColor: Colors.white,
-        buttonColor: Color(0xFF39796B),
-        tabBarTheme: TabBarTheme(labelColor: Colors.white),
-      ),
-      home: HomeScreen(),
-      initialRoute: SplashScreen.routeName,
-      routes: {
-        SplashScreen.routeName: (ctx) => SplashScreen(),
-        HomeScreen.routeName: (ctx) => HomeScreen(),
-        LoginScreen.routeName: (ctx) => LoginScreen(),
-      },
-    );
+    return ChangeNotifierProvider(
+        create: (BuildContext context) => NotesProvider(),
+        child: MaterialApp(
+          title: 'Image Notes',
+          theme: ThemeData(
+            primarySwatch: customColor,
+            accentColor: Colors.white,
+            buttonColor: Color(0xFF39796B),
+            tabBarTheme: TabBarTheme(labelColor: Colors.white),
+          ),
+          home: HomeScreen(),
+          initialRoute: SplashScreen.routeName,
+          routes: {
+            SplashScreen.routeName: (ctx) => SplashScreen(),
+            HomeScreen.routeName: (ctx) => HomeScreen(),
+            LoginScreen.routeName: (ctx) => LoginScreen(),
+          },
+        ));
   }
 }
