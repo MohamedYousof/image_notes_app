@@ -25,7 +25,7 @@ class NoteTile extends StatelessWidget {
               imageUrl: imgUrl,
               width: double.infinity,
               fit: BoxFit.cover,
-              placeholder: (context, url) => CircularProgressIndicator(),
+              placeholder: (context, url) => LinearProgressIndicator(),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
