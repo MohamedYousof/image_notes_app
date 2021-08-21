@@ -17,6 +17,7 @@ class _NotePopupState extends State<NotePopup> {
   var imgBytes;
   var imageName = '';
   String comment = '';
+  bool _posting = false;
   void selectImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
@@ -95,16 +96,24 @@ class _NotePopupState extends State<NotePopup> {
                   },
                   child: Text('Cancel'),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Provider.of<NotesProvider>(context, listen: false)
-                        .postNote(comment, imgBytes, imageName)
-                        .then((value) {
-                      Navigator.pop(context);
-                    });
-                  },
-                  child: Text('Post'),
-                ),
+                _posting
+                    ? Center(child: CircularProgressIndicator())
+                    : ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _posting = true;
+                          });
+                          Provider.of<NotesProvider>(context, listen: false)
+                              .postNote(comment, imgBytes, imageName)
+                              .then((value) {
+                            setState(() {
+                              _posting = false;
+                            });
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Text('Post'),
+                      ),
               ],
             )
           ],

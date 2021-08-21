@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:image_notes/controller/helpers/shared_prefs.dart';
+import 'package:image_notes/screens/login_screen.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({Key? key}) : super(key: key);
+
+  Future<void> logout(BuildContext context) async {
+    await SharedData().setLoginData('', '');
+    Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +35,9 @@ class ProfileTab extends StatelessWidget {
                         ? MainAxisAlignment.spaceAround
                         : MainAxisAlignment.center,
                     children: [
-                      ActionButton(Icons.star),
-                      ActionButton(Icons.settings),
-                      ActionButton(Icons.edit),
+                      ActionButton(Icons.star, () {}),
+                      ActionButton(Icons.settings, () {}),
+                      ActionButton(Icons.logout, () => logout(context)),
                     ],
                   ),
                 )
@@ -76,7 +82,8 @@ class ProfileTab extends StatelessWidget {
 
 class ActionButton extends StatelessWidget {
   final IconData iconData;
-  ActionButton(this.iconData);
+  final Function clickHandler;
+  ActionButton(this.iconData, this.clickHandler);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -85,7 +92,7 @@ class ActionButton extends StatelessWidget {
         constraints: BoxConstraints.tightFor(width: 60, height: 60),
         child: ElevatedButton(
           child: Icon(iconData),
-          onPressed: () {},
+          onPressed: () => clickHandler(),
           style: ElevatedButton.styleFrom(
             shape: CircleBorder(),
           ),
