@@ -1,7 +1,31 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class NotePopup extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:image_notes/controller/providers/notes_provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+class NotePopup extends StatefulWidget {
   const NotePopup({Key? key}) : super(key: key);
+
+  @override
+  _NotePopupState createState() => _NotePopupState();
+}
+
+class _NotePopupState extends State<NotePopup> {
+  var imgFile;
+  var imgBytes;
+  var imageName = '';
+  String comment = '';
+  void selectImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+    imgBytes = await image.readAsBytes();
+    setState(() {
+      imgFile = File(image.path);
+    });
+    imageName = image.name;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +48,22 @@ class NotePopup extends StatelessWidget {
               child: Container(
                 constraints: BoxConstraints(
                   minHeight: totalHeight * 0.5,
+                  maxHeight: totalHeight * 0.5,
                   minWidth: double.infinity,
                 ),
                 color: Color(0xFFD8D8D8),
-                child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.camera_alt_outlined,
-                    size: 100,
-                  ),
-                ),
+                child: imgFile == null
+                    ? IconButton(
+                        onPressed: selectImage,
+                        icon: Icon(
+                          Icons.camera_alt_outlined,
+                          size: 100,
+                        ),
+                      )
+                    : Image.file(
+                        imgFile,
+                        fit: BoxFit.contain,
+                      ),
               ),
             ),
             Container(
@@ -41,6 +71,9 @@ class NotePopup extends StatelessWidget {
                 maxHeight: totalHeight * 0.3,
               ),
               child: TextField(
+                onChanged: (text) {
+                  comment = text;
+                },
                 maxLength: 120,
                 maxLines: 3,
                 decoration: InputDecoration(
@@ -49,27 +82,29 @@ class NotePopup extends StatelessWidget {
                   contentPadding: const EdgeInsets.only(right: 10),
                   fillColor: Colors.white,
                   filled: true,
-                  // border: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(4.0),
-                  //   borderSide: BorderSide(color: Color(0xfff5f5f5), width: 1),
-                  // ),
                 ),
               ),
             ),
             Spacer(),
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Post'),
-                ),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   child: Text('Cancel'),
-                )
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Provider.of<NotesProvider>(context, listen: false)
+                        .postNote(comment, imgBytes, imageName)
+                        .then((value) {
+                      Navigator.pop(context);
+                    });
+                  },
+                  child: Text('Post'),
+                ),
               ],
             )
           ],
