@@ -55,6 +55,10 @@ class _NotesListState extends State<NotesList> {
     );
   }
 
+  Future<void> _refresh() async {
+    await Provider.of<NotesProvider>(context, listen: false).downloadNotes();
+  }
+
   @override
   Widget build(BuildContext context) {
     final notes = Provider.of<NotesProvider>(context).notes;
@@ -79,20 +83,23 @@ class _NotesListState extends State<NotesList> {
               ),
             );
           } else {
-            return GridView.builder(
-              scrollDirection: Axis.vertical,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
-                mainAxisSpacing: 15,
+            return RefreshIndicator(
+              onRefresh: _refresh,
+              child: GridView.builder(
+                scrollDirection: Axis.vertical,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: orientation == Orientation.portrait ? 1 : 2,
+                  mainAxisSpacing: 15,
+                ),
+                padding: EdgeInsets.all(10),
+                itemBuilder: (context, i) => NoteTile(
+                  remoteId: notes[i].remoteId,
+                  imgUrl: notes[i].imgUrl,
+                  comment: notes[i].comment,
+                  username: notes[i].userName,
+                ),
+                itemCount: notes.length,
               ),
-              padding: EdgeInsets.all(10),
-              itemBuilder: (context, i) => NoteTile(
-                remoteId: notes[i].remoteId,
-                imgUrl: notes[i].imgUrl,
-                comment: notes[i].comment,
-                username: notes[i].userName,
-              ),
-              itemCount: notes.length,
             );
           }
         },

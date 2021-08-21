@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_notes/controller/helpers/api_helper.dart';
 
 class NoteTile extends StatelessWidget {
   final remoteId;
@@ -22,7 +23,7 @@ class NoteTile extends StatelessWidget {
           NoteHeader(username),
           Expanded(
             child: CachedNetworkImage(
-              imageUrl: imgUrl,
+              imageUrl: imgUrl ?? '${Api.baseUrl}/media/not_found.png',
               width: double.infinity,
               fit: BoxFit.cover,
               placeholder: (context, url) => LinearProgressIndicator(),
